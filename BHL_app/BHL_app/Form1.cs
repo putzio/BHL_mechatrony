@@ -13,6 +13,10 @@ namespace BHL_app
 {
     public partial class Form1 : Form
     {
+        String urlHome = "https://api.thingspeak.com/channels/1353802/feeds.json?api_key=PK5RIGHIFH7EFFFF&results=";
+        String chartBegin = "https://thingspeak.com/channels/1353802/charts/";
+        String chartEnd = "?bgcolor=%23ffffff&color=%23d62020&dynamic=true&results=60&type=line&update=15";
+
         public Form1()
         {
             InitializeComponent();
@@ -22,7 +26,8 @@ namespace BHL_app
         {
             ProcessStartInfo psi = new ProcessStartInfo
             {
-                FileName = "https://api.thingspeak.com/channels/1353802/feeds.json?api_key=PK5RIGHIFH7EFFFF&results=1",
+                //URL adress to sent information about being at home
+                FileName =(urlHome + "0"),//send 0 -> outside
                 UseShellExecute = true
             };
             Process.Start(psi);
@@ -32,7 +37,8 @@ namespace BHL_app
         {
             ProcessStartInfo psi = new ProcessStartInfo
             {
-                FileName = "https://api.thingspeak.com/channels/1353802/feeds.json?api_key=PK5RIGHIFH7EFFFF&results=1",
+                //URL adress to sent information about being at home
+                FileName = (urlHome+"1"),//send 1 -> at home
                 UseShellExecute = true
             };
             Process.Start(psi);
@@ -42,7 +48,7 @@ namespace BHL_app
         {
             ProcessStartInfo psi = new ProcessStartInfo
             {
-                FileName = "https://thingspeak.com/channels/1353802/charts/1?bgcolor=%23ffffff&color=%23d62020&dynamic=true&results=60&type=line&update=15",
+                FileName = (chartBegin+"1"+chartEnd),
                 UseShellExecute = true
             };
             Process.Start(psi);
@@ -52,10 +58,20 @@ namespace BHL_app
         {
             ProcessStartInfo psi = new ProcessStartInfo
             {
-                FileName = "https://thingspeak.com/channels/1353802/charts/2?bgcolor=%23ffffff&color=%23d62020&dynamic=true&results=60&type=line&update=15",
+                FileName = (chartBegin+"2"+chartEnd),
                 UseShellExecute = true
             };
             Process.Start(psi);
+        }
+
+        private void BtnTemp_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void BtnHum_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
