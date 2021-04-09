@@ -13,7 +13,10 @@ namespace BHL_app
 {
     public partial class Form1 : Form
     {
+
+        //URL to the channel to write values depending on being at home 
         String urlHome = "https://api.thingspeak.com/channels/1353802/feeds.json?api_key=PK5RIGHIFH7EFFFF&results=";
+        //Beginning and ending of URL to the graphs
         String chartBegin = "https://thingspeak.com/channels/1353802/charts/";
         String chartEnd = "?bgcolor=%23ffffff&color=%23d62020&dynamic=true&results=60&type=line&update=15";
 
@@ -48,6 +51,7 @@ namespace BHL_app
         {
             ProcessStartInfo psi = new ProcessStartInfo
             {
+                //URL to the website with the chart nr. 1
                 FileName = (chartBegin+"1"+chartEnd),
                 UseShellExecute = true
             };
@@ -58,6 +62,7 @@ namespace BHL_app
         {
             ProcessStartInfo psi = new ProcessStartInfo
             {
+                //URL to the website with the chart nr. 2
                 FileName = (chartBegin+"2"+chartEnd),
                 UseShellExecute = true
             };
@@ -66,12 +71,24 @@ namespace BHL_app
 
         private void BtnTemp_Click(object sender, EventArgs e)
         {
-
+            ProcessStartInfo psi = new ProcessStartInfo
+            {
+                //URL to the website with the chart nr. 3
+                FileName = (chartBegin + "3" + chartEnd),
+                UseShellExecute = true
+            };
+            Process.Start(psi);
         }
 
         private void BtnHum_Click(object sender, EventArgs e)
         {
-
+            ProcessStartInfo psi = new ProcessStartInfo
+            {
+                //URL to the website with the chart nr. 4
+                FileName = (chartBegin + "4" + chartEnd),
+                UseShellExecute = true
+            };
+            Process.Start(psi);
         }
     }
 }
