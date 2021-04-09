@@ -1,3 +1,7 @@
+//Hackaton 2021
+//Druzyna Kwartetu Mechatronicznego przedstawia:
+
+
 #include <DHT.h>
 #include <DHT_U.h>
 
