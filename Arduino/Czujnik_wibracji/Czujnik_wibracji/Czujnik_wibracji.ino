@@ -1,5 +1,5 @@
 int prog_wibracji = 800;
-int prog_alarmu = 20;
+int prog_alarmu = 2;
 int prevMillis = 0;
 int cnt = 0;
 
@@ -14,13 +14,24 @@ void loop() {
   
   int czujnik = 0;
   czujnik = analogRead(A0);
-
-  if (czujnik > prog_wibracji)
+  
+  int pomiarA = 0;
+  int pomiarB = 0;
+  
+  pomiarA = digitalRead(5);
+  delay(5);
+  pomiarB = digitalRead(5);
+  if (pomiarA < pomiarB)
   {
     cnt++;
   }
 
-  if(cnt > prog_alarmu)
+//  if (czujnik > prog_wibracji)
+//  {
+//    cnt++;
+//  }
+
+  if(cnt >= prog_alarmu)
   {
     Serial.println("uwgaa ktos napierdala w okienko aaa");
     

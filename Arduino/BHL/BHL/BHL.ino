@@ -17,6 +17,7 @@
 int PomiarPradu(void);
 int BadanieCzadu(void);
 void ThingspeakWysylanie(int liczbaPierwsza, int liczbaDruga, int liczbaTrzecia, int liczbaCzwarta);
+void ObslugaPrzekaznika(int obecny);
 
 //hasło, SSID sieci WiFi
 char ssid[] = "Ecuador";
@@ -28,12 +29,15 @@ WiFiClient client;
 //informacje dot. serwera Thingspeak
 unsigned long numerKanalu = 1353802;
 const char numerAPIZapisz[] = "SF93QOL0YTQXZVB3";
-
+const char numerAPICzytaj[] = "PK5RIGHIFH7EFFFF";
 //czujnik czadu
 int prog_czadu = 500;
 
 //DHT11
 DHT dht(DHTPIN, DHTTYPE);
+
+//obsluga przekaznika
+int obecnosc = 1;
 
 void setup() {
   pinMode(POMIAR_PRADU, INPUT);
@@ -55,66 +59,82 @@ void setup() {
 void loop() {
   ThingspeakWysylanie(PomiarPradu(), BadanieCzadu(), dht.readTemperature(), dht.readHumidity());
 
+  obecnosc = ThingSpeak.readIntField(numerKanalu, 5, numerAPICzytaj);
+  ObslugaPrzekaznika(obecnosc);
+
+  delay(20000);
+}
 
 
-    delay(10000);
-  }
+int PomiarPradu(void)
+{
 
+  int mVnaAmper = 100;
 
-  int PomiarPradu(void)
+  int ACSoffset = 2500;
+
+  int RawValue = analogRead(POMIAR_PRADU);
+  double Napiecie = (RawValue / 1024.0) * 5000;
+  double Prad = ((Napiecie - ACSoffset) / mVnaAmper);
+
+  Serial.print("Prad : ");
+  Serial.println(Prad);
+  //  if (Prad < 3)
+  //  {
+  //    digitalWrite(PRZEKAZNIK, HIGH);
+  //  }
+  //  else
+  //  {
+  //    digitalWrite(PRZEKAZNIK, LOW);
+  //    Serial.println("masz włączone żelazko");
+  //  }
+  return Prad;
+}
+
+void ThingspeakWysylanie(int liczbaPierwsza, int liczbaDruga, int liczbaTrzecia, int liczbaCzwarta)
+{
+  ThingSpeak.setField(1, liczbaPierwsza);
+  ThingSpeak.setField(2, liczbaDruga);
+  ThingSpeak.setField(3, liczbaTrzecia);
+  ThingSpeak.setField(4, liczbaCzwarta);
+  int x = ThingSpeak.writeFields(numerKanalu, numerAPIZapisz);
+  if (x == 200)
   {
-
-    int mVnaAmper = 100;
-
-    int ACSoffset = 2500;
-
-    int RawValue = analogRead(POMIAR_PRADU);
-    double Napiecie = (RawValue / 1024.0) * 5000;
-    double Prad = ((Napiecie - ACSoffset) / mVnaAmper);
-
-    // Serial.print("Prad : ");
-    //Serial.println(Prad);
-    if (Prad < 3)
-    {
-      digitalWrite(PRZEKAZNIK, HIGH);
-    }
-    else
-    {
-      digitalWrite(PRZEKAZNIK, LOW);
-      Serial.println("masz włączone żelazko");
-    }
-    return Prad;
+    Serial.println("Wyslano dane");
   }
-
-  void ThingspeakWysylanie(int liczbaPierwsza, int liczbaDruga, int liczbaTrzecia, int liczbaCzwarta)
+  else
   {
-    ThingSpeak.setField(1, liczbaPierwsza);
-    ThingSpeak.setField(2, liczbaDruga);
-    ThingSpeak.setField(3, liczbaTrzecia);
-    ThingSpeak.setField(4, liczbaCzwarta);
-    int x = ThingSpeak.writeFields(numerKanalu, numerAPIZapisz);
-    if (x == 200)
-    {
-      Serial.println("Wyslano dane");
-    }
-    else
-    {
-      Serial.println("Blad wysylania danych");
-    }
+    Serial.println("Blad wysylania danych");
   }
+}
 
-  int BadanieCzadu(void)
+int BadanieCzadu(void)
+{
+  int pomiar = analogRead(POMIAR_CZADU);
+  Serial.print("Czad: ");
+  Serial.println(pomiar);
+  if (pomiar > prog_czadu)
   {
-    int pomiar = analogRead(POMIAR_CZADU);
-    Serial.print("Czad: ");
-    Serial.println(pomiar);
-    if (pomiar > prog_czadu)
-    {
-      return 1;
-    }
-    else
-    {
-      return 0;
-    }
-
+    return 1;
   }
+  else
+  {
+    return 0;
+  }
+
+}
+void ObslugaPrzekaznika(int obecny)
+{
+   if (obecny == 0)
+  {
+    Serial.println("Nikogo nie ma w domu");
+    digitalWrite(PRZEKAZNIK, LOW);
+  }
+  else
+  {
+    
+    Serial.println("Jestem w domu");
+    digitalWrite(PRZEKAZNIK, HIGH);
+  }
+  
+}
