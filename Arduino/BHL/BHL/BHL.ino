@@ -1,7 +1,9 @@
 //Hackaton 2021
 //Druzyna Kwartetu Mechatronicznego przedstawia:
 
-
+#include <SPI.h>
+#include <WiFiNINA.h>
+#include <ThingSpeak.h>
 #include <DHT.h>
 #include <DHT_U.h>
 
@@ -10,11 +12,6 @@
 #define POMIAR_CZADU A1
 #define DHTPIN 3
 #define DHTTYPE DHT11
-
-#include <SPI.h>
-#include <WiFiNINA.h>
-#include <ThingSpeak.h>
-
 
 //deklaracje funkcji
 int PomiarPradu(void);
