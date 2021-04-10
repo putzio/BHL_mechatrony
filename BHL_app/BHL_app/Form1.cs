@@ -15,7 +15,7 @@ namespace BHL_app
     {
 
         //URL to the channel to write values depending on being at home 
-        String urlHome = "https://api.thingspeak.com/channels/1353802/feeds.json?api_key=PK5RIGHIFH7EFFFF&results=";
+        String urlHome = "https://api.thingspeak.com/update?api_key=SF93QOL0YTQXZVB3&field5=";
         //Beginning and ending of URL to the graphs
         String chartBegin = "https://thingspeak.com/channels/1353802/charts/";
         String chartEnd = "?bgcolor=%23ffffff&color=%23d62020&dynamic=true&results=60&type=line&update=15";
@@ -34,6 +34,8 @@ namespace BHL_app
                 UseShellExecute = true
             };
             Process.Start(psi);
+
+
         }
 
         private void BtnHome_Click(object sender, EventArgs e)
