@@ -30,7 +30,7 @@ namespace BHL_app
             ProcessStartInfo psi = new ProcessStartInfo
             {
                 //URL adress to sent information about being at home
-                FileName =(urlHome + "0"),//send 0 -> outside
+                FileName = urlHome+"0",//send 0 -> outside
                 UseShellExecute = true
             };
             Process.Start(psi);
